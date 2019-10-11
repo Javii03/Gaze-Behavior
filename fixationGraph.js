@@ -1,3 +1,15 @@
+//////////////////////////
+//Add rectangle to be safe
+//////////////////////////
+var bar1 = d3.select("svg")
+             .attr('transform', 'translate(0,0)')
+             .append("rect")
+             .attr('width', '1280')
+             .attr('height', '500')
+             .attr('fill', 'rgba(0,0,0,0)')
+             .attr('stroke', '#2378ae')
+             .attr('stroke-width', '3')
+///////////////////////////////////////
 
 
     var width = 1280;
