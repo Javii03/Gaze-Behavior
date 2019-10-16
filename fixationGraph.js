@@ -1,26 +1,27 @@
-d3.csv("p3.graphFXD.csv").then(function(dataF) {
+d3.csv("p3.graphFXD.csv").then(function(dataF) {    //Reading the data from the csv files 
     d3.csv("mouse_EVD_graph.csv").then(function(DataM){
     
-     var sumBlueTime = 0;
+     var sumBlueTime = 0;   //Initializing values for fixationTime
      var sumRedTime = 0;
      var sumGreenTime = 0;
-     var blueFix = 0;
+
+     var blueFix = 0;    //Initializing values for number of fixations
      var redFix = 0;
      var greenFix = 0;
 
-     var mouseBlue = 0;
+     var mouseBlue = 0;  //Initializing values for mouse clicks 
      var mouseRed = 0;
      var mouseGreen = 0;
 
-     var minsConvert = 60000;
-     var formatDecimal = d3.format(".2f")
+     var minsConvert = 60000;  //To convert miliseconds to minutes 
+     var formatDecimal = d3.format(".2f") // To round to the second decimal 
 
      DataM.forEach(function(d) {
-        d.Data1 = +d.Data1; //You need to use this 
+        d.Data1 = +d.Data1;  //To convert the csv string to an int 
         d.Data2 = +d.Data2;
     
-        if(d.Data1 < 1280 && d.Data2 < 400)
-        {
+        if(d.Data1 < 1280 && d.Data2 < 400)  //Look at value and place it in the 
+        {                                   //section they belong 
             mouseBlue += 1;
         }
         else if(d.Data1 < 640 && d.Data2 > 400)
@@ -35,12 +36,12 @@ d3.csv("p3.graphFXD.csv").then(function(dataF) {
 
 
     dataF.forEach(function(d) {
-        d.ScreenX = +d.ScreenX; //You need to use this 
+        d.ScreenX = +d.ScreenX;  //To convert the csv string to an int 
         d.ScreenY = +d.ScreenY;
         d.Duration = +d.Duration;
         d.Time = +d.Time;
-        if(d.ScreenX < 1280 && d.ScreenY < 400)
-        {
+        if(d.ScreenX < 1280 && d.ScreenY < 400)   //Look at value and place it in the 
+        {                                         //section they belong 
             sumBlueTime += d.Duration;
             blueFix += 1;
         }
@@ -57,11 +58,11 @@ d3.csv("p3.graphFXD.csv").then(function(dataF) {
 
     
 
-    sumRedTime = sumRedTime / minsConvert;
+    sumRedTime = sumRedTime / minsConvert;    //Convert the seconds to minutes 
     sumBlueTime = sumBlueTime / minsConvert;
     sumGreenTime = sumGreenTime / minsConvert;
 
-var fixPoints = d3.select("svg")
+var fixPoints = d3.select("svg")      //Add the fixation points to the graphs 
     .selectAll("g")
         .data(dataF)
         .enter()  //Will do a check if group variables are not created
@@ -73,33 +74,32 @@ fixPoints.append("circle")
          .attr("r", "5")
          .attr("fill", "yellow")
 
-var mousePoints = d3.select("svg")
+var mousePoints = d3.select("svg")  //Add the mouse events to the graphs 
     .selectAll("g")
     .data(DataM)
     .enter()
 
-mousePoints.append("circle").raise()
+mousePoints.append("circle")
     .attr("cx", function(d) { return d.Data1;})
     .attr("cy", function(d) { return d.Data2;})
     .attr("r", "5")
     .attr("fill", "blue")
 
-///////////////////////////////////////////////////////Title 
+///////////////////////////////////////////////////////Title for the visualization
 
 var title = d3.select("svg")
             .append("text")
-                              
             .attr("x", "800")
             .attr("y", "100")
             .attr("font-size", "3em")
             .style("fill", "black")
-            .text("GRAPH");
+            .text("TREE");
 
 
 ////////////////////////////////////////////////////CREATING QUADRANTS 
 var barInfo = d3.select("svg") //To add the quads 
 
-var bar1 = barInfo.append("rect")   
+var bar1 = barInfo.append("rect")    //Create the rectangle for top     
                   .attr("x", "0")
                   .attr("y", "5")
                   .attr('width', '1280')
@@ -107,13 +107,13 @@ var bar1 = barInfo.append("rect")
                   .attr('fill', 'rgba(0,0,0,0)')
                   .attr('stroke', 'blue')
                   .attr('stroke-width', '5')
-        .on("mouseover", function(d){
+        .on("mouseover", function(d){    //Highlight the box when user hovers over 
                       d3.select(this)
                       .attr("fill", "blue")
                       .attr("opacity", ".5");
 
 
-        var blueBoxInfo = d3.select("svg").append("rect")
+        var blueBoxInfo = d3.select("svg").append("rect")  //Add box to enter text in 
                        .attr("x", "800")
                        .attr("y", "250")
                        .attr('width', '320')
@@ -124,23 +124,23 @@ var bar1 = barInfo.append("rect")
                        .attr("id", "blueRect")
 
 
-                bar1 = d3.select("svg").append("text")
+                bar1 = d3.select("svg").append("text")  //Information about top box fixation time
                               .attr("class", "infoText")
                               .attr("x", "800")
                               .attr("y", "270")
                               .attr("font-size", "1.5em")
                               .style("fill", "black")
-                              .text("Total fixation : " + formatDecimal(sumBlueTime) + " mins");
+                              .text("Total tixation time : " + formatDecimal(sumBlueTime) + " mins");
 
-                bar1 = d3.select("svg").append("text")
+                bar1 = d3.select("svg").append("text")  //Information about top box number of fixations 
                               .attr("class", "infoText")
                               .attr("x", "800")
                               .attr("y", "290")
                               .attr("font-size", "1.5em")
                               .style("fill", "black")
-                              .text("Total number of Fixations =" + blueFix);
+                              .text("Total number of fixations =" + blueFix);
 
-                bar1 = d3.select("svg").append("text")
+                bar1 = d3.select("svg").append("text") //Information about top box mouse clicks 
                               .attr("class", "infoText")
                               .attr("x", "800")
                               .attr("y", "310")
@@ -149,14 +149,14 @@ var bar1 = barInfo.append("rect")
                               .text("Total mouse clicks =" + mouseBlue);
                             
                   })
-                  .on("mouseout", function(d){
+                  .on("mouseout", function(d){   //When user hovers out remove the box and text with information 
                       d3.select(this)
                       .attr('fill', 'rgba(0,0,0,0)')
                       d3.selectAll("text.infoText").remove()
                       d3.selectAll("#blueRect").remove();
                   })
 
-var bar2 = barInfo.append("rect")
+var bar2 = barInfo.append("rect")   //Create the rectangle for bottom left 
                    .attr("x", "0")
                    .attr("y", "405")
                    .attr('width', '640')
@@ -164,7 +164,7 @@ var bar2 = barInfo.append("rect")
                    .attr('fill', 'rgba(0,0,0,0)') 
                    .attr('stroke', 'red')
                    .attr('stroke-width', '5')
-        .on("mouseover", function(d){
+        .on("mouseover", function(d){   //Highlight the box when user hovers over 
                     d3.select(this)
                     .attr("fill", "red")
                     .attr("opacity", ".5")
@@ -172,7 +172,7 @@ var bar2 = barInfo.append("rect")
                
                   
                 
-                var redBoxInfo = d3.select("svg").append("rect")
+                var redBoxInfo = d3.select("svg").append("rect") //Add box to enter text in 
                        .attr("x", "300")
                        .attr("y", "430")
                        .attr('width', '320')
@@ -183,23 +183,23 @@ var bar2 = barInfo.append("rect")
                        .attr("id", "redRect")
 
 
-                bar2 = d3.select("svg").append("text")
+                bar2 = d3.select("svg").append("text")  //Information about box fixation time
                               .attr("class", "infoText")
                               .attr("x", "300")
                               .attr("y", "450")
                               .attr("font-size", "1.5em")
                               .style("fill", "black")
-                              .text("Total fixation : " + formatDecimal(sumRedTime) + " mins");
+                              .text("Total fixation time: " + formatDecimal(sumRedTime) + " mins");
 
-                bar2 = d3.select("svg").append("text")
+                bar2 = d3.select("svg").append("text")  //Information about number of fixations
                               .attr("class", "infoText")
                               .attr("x", "300")
                               .attr("y", "470")
                               .attr("font-size", "1.5em")
                               .style("fill", "black")
-                              .text("Total number of Fixations =" + redFix);
+                              .text("Total number of fixations =" + redFix);
 
-                bar2 = d3.select("svg").append("text")
+                bar2 = d3.select("svg").append("text")     //Information about mouse clicks 
                               .attr("class", "infoText")
                               .attr("x", "300")
                               .attr("y", "490")
@@ -211,14 +211,14 @@ var bar2 = barInfo.append("rect")
       
                     
                 })
-                .on("mouseout", function(d){
+                .on("mouseout", function(d){    //When user hovers out remove the box and text with information
                     d3.select(this)
                     .attr('fill', 'rgba(0,0,0,0)')
                     d3.selectAll("text.infoText").remove()
                     d3.selectAll("#redRect").remove();
                 })
            
-var bar3 = barInfo.append("rect")
+var bar3 = barInfo.append("rect")   //Create the rectangle for bottom right 
                   .attr("x", "640")
                   .attr("y", "405")
                   .attr('width', '640')
@@ -226,13 +226,13 @@ var bar3 = barInfo.append("rect")
                   .attr('fill', 'rgba(0,0,0,0)')
                   .attr('stroke', 'green')
                   .attr('stroke-width', '5')
-        .on("mouseover", function(d){
+        .on("mouseover", function(d){   //Highlight the box when user hovers over 
                     d3.select(this)
                     .attr("fill", "green")
                     .attr("opacity", ".5");
 
 
-            var greenBoxInfo = d3.select("svg").append("rect")
+            var greenBoxInfo = d3.select("svg").append("rect")  //Add box to enter text in 
                     .attr("x", "700")
                     .attr("y", "430")
                     .attr('width', '320')
@@ -243,23 +243,23 @@ var bar3 = barInfo.append("rect")
                     .attr("id", "greenRect")
 
 
-             bar3 = d3.select("svg").append("text")
+             bar3 = d3.select("svg").append("text")  //Information about box fixation time
                            .attr("class", "infoText")
                            .attr("x", "700")
                            .attr("y", "450")
                            .attr("font-size", "1.5em")
                            .style("fill", "black")
-                           .text("Total fixation : " + formatDecimal(sumGreenTime) + " mins");
+                           .text("Total fixation time: " + formatDecimal(sumGreenTime) + " mins");
 
-             bar3 = d3.select("svg").append("text")
+             bar3 = d3.select("svg").append("text")    //Information about number of fixations
                            .attr("class", "infoText")
                            .attr("x", "700")
                            .attr("y", "470")
                            .attr("font-size", "1.5em")
                            .style("fill", "black")
-                           .text("Total number of Fixations =" + greenFix);
+                           .text("Total number of fixations =" + greenFix);
 
-             bar3 = d3.select("svg").append("text")
+             bar3 = d3.select("svg").append("text")     //Information about mouse clicks 
                            .attr("class", "infoText")
                            .attr("x", "700")
                            .attr("y", "490")
@@ -268,7 +268,7 @@ var bar3 = barInfo.append("rect")
                            .text("Total mouse clicks =" + mouseGreen);
                          
                 })
-                .on("mouseout", function(d){
+                .on("mouseout", function(d){        //When user hovers out remove the box and text with information
                     d3.select(this)
                     .attr('fill', 'rgba(0,0,0,0)')
                     d3.selectAll("text.infoText").remove()
