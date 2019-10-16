@@ -1,5 +1,5 @@
-d3.csv("p3.graphFXD.csv").then(function(dataF) {    //Reading the data from the csv files 
-    d3.csv("mouse_EVD_graph.csv").then(function(DataM){
+ d3.csv("p3.treeFXD.csv").then(function(dataF) {    //Reading the data from the csv files 
+    d3.csv("mouse_EVD_tree.csv").then(function(DataM){
     
      var sumBlueTime = 0;   //Initializing values for fixationTime
      var sumRedTime = 0;
@@ -97,8 +97,42 @@ var title = d3.select("svg")
 
 
 ////////////////////////////////////////////////////CREATING QUADRANTS 
-var barInfo = d3.select("svg") //To add the quads 
+var barInfo = d3.select("svg") //To add the quads
 
+
+/////////////////////////////////////////// LEGEND
+barInfo.append("circle")
+       .attr("cx", "830")
+       .attr("cy", "150")
+       .attr("r", "15")
+       .attr("fill", "yellow")
+       .attr("stroke", "black")
+       .attr("stroke-width", "5")
+
+barInfo.append("circle")
+       .attr("cx", "830")
+       .attr("cy", "200")
+       .attr("r", "15")
+       .attr("fill", "blue")
+       .attr("stroke", "black")
+       .attr("stroke-width", "5")
+
+barInfo.append("text")  //Information about top box fixation time
+       .attr("x", "850")
+       .attr("y", "150")
+       .attr("font-size", "1.5em")
+       .style("fill", "black")
+       .text(" = Fixation Point");
+
+barInfo.append("text")  //Information about top box fixation time
+       .attr("x", "850")
+       .attr("y", "200")
+       .attr("font-size", "1.5em")
+       .style("fill", "black")
+       .text(" = Mouse Click");
+
+///////////////////////////////////////////// LEGEND 
+    
 var bar1 = barInfo.append("rect")    //Create the rectangle for top     
                   .attr("x", "0")
                   .attr("y", "5")
